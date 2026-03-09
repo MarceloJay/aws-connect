@@ -1,0 +1,82 @@
+{
+  "name": "aws-ssm-manager",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "dev:electron": "concurrently \"npm run dev\" \"npm run server\" \"wait-on http://localhost:3000 && NODE_ENV=development electron .\"",
+    "build": "tsc && vite build",
+    "build:server": "cd server && npm run build",
+    "build:electron": "tsc -p electron/tsconfig.json",
+    "build:all": "npm run build && npm run build:server && npm run build:electron",
+    "dist": "npm run build:all && electron-builder",
+    "dist:mac": "npm run build:all && electron-builder --mac",
+    "dist:win": "npm run build:all && electron-builder --win",
+    "dist:linux": "npm run build:all && electron-builder --linux",
+    "server": "cd server && npm run dev",
+    "start": "concurrently \"npm run dev\" \"npm run server\""
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.4.38",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "concurrently": "^8.2.2",
+    "electron": "^40.8.0",
+    "electron-builder": "^24.9.1",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.awsssm.manager",
+    "productName": "AWS Connect",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "server/dist",
+        "to": "server/dist"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "public/icon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "public/icon.ico"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "public/icon.png",
+      "category": "Development"
+    }
+  }
+}

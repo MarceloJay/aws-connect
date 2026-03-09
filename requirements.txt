@@ -1,0 +1,53 @@
+aws-cli-conect==0.1.0
+
+
+vamos criar um projeto react com typescrypt , esse projeto é conectar na aws via ssm com perfil sso:
+
+1 - vai rodar um comando pra verficar se esta conectado na aws com algum perfil , se tiver vai mostrar qual esta conectado.
+2 - se não tiver conectado listar os perfis aws configurados na maquina independete de windows ou mac e mostrar.
+3 - se não tiver nenhum perfil configurado vao dar a opção de configurar.
+4 - os perfis devem ser clicaveis , quando clicar vai logar na aws, na cinta selecionada.
+5 - vai listar as portas abertas na aws e dar a opção de conexão .
+
+
+
+bffmesacredito 5000
+mesacreditosvc 50100
+acessadados    50200
+portalmanager  46478
+RDS            3601
+
+"aws_access_key_id = TESTACCESSKEY123456
+\naws_secret_access_key = testSecretKeyExample1234567890\naws_session_token = testSessionTokenExample1234567890abcdef"
+
+
+bffmesacredito
+aws ssm start-session \
+ --target i-1234567890abcdef0 \
+ --document-name AWS-StartPortForwardingSession \
+ --parameters '{"portNumber":["5000"],"localPortNumber":["5000"]}' \
+ --profile {profile}
+mesacreditosvc
+aws ssm start-session \
+ --target i-1234567890abcdef0 \
+ --document-name AWS-StartPortForwardingSession \
+ --parameters '{"portNumber":["50100"],"localPortNumber":["50100"]}' \
+ --profile {profile}
+acessadados
+aws ssm start-session \
+ --target i-1234567890abcdef0 \
+ --document-name AWS-StartPortForwardingSession \
+ --parameters '{"portNumber":["50200"],"localPortNumber":["50200"]}' \
+ --profile {profile}
+portalmanager
+aws ssm start-session \
+ --target i-1234567890abcdef0 \
+ --document-name AWS-StartPortForwardingSession \
+ --parameters '{"portNumber":["46478"],"localPortNumber":["46478"]}' \
+ --profile {profile}
+RDS
+aws ssm start-session \
+ --target i-1234567890abcdef0 \
+ --document-name AWS-StartPortForwardingSessionToRemoteHost \
+ --parameters '{"host":["meu-rds.endpoint"],"portNumber":["3601"],"localPortNumber":["3601"]}' \
+ --profile {profile}

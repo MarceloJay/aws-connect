@@ -1,0 +1,8 @@
+node_modules/
+dist/
+dist-electron/
+release/
+server/node_modules/
+server/dist/
+.DS_Store
+*.pkg
